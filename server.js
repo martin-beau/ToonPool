@@ -60,6 +60,7 @@ app.get('/pool2017', function (req, res) {
         
         for (k = 0; k <= currentRound; k++) {
             // console.log('Round ' + k);
+            // console.log('Result for this round ' + JSON.stringify(results[2017].rounds[k]));
             if (k === 3) {
                 //Playoff final
                 // console.log('player picked ' + player.winner);
@@ -83,6 +84,7 @@ app.get('/pool2017', function (req, res) {
                         selectedTeam = player.rounds[k][conference][i];
                         // console.log('player picked ' + selectedTeam);
 
+                        // console.log('result ' + JSON.stringify(results[2017].rounds[k][conference]));
                         if (results[2017].rounds[k][conference].indexOf(selectedTeam) > -1) {
                             currentPoints += points.rounds[k];
                             winningPicks[k].selection.push({"team": teams[2017][selectedTeam], "point": points.rounds[k]});
@@ -99,7 +101,7 @@ app.get('/pool2017', function (req, res) {
                 
         player.points = currentPoints;
         player.winningPicks = winningPicks;
-        //console.log('TOTAL POINTS: ' + player.points);
+        // console.log('TOTAL POINTS: ' + player.points);
     };
 
     players.forEach(getPlayerPoints);
