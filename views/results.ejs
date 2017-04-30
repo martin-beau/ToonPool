@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+</head>
+<body class="container">
+    <header>
+        <div class="row">
+            <div class="col s4 offset-4">
+                <img src="/tba_logo.png" height="120" alt="Toon Boom">
+            </div>
+            
+        </div>
+        
+    </header>
+
+    <main>
+        <ul class="collapsible popout" data-collapsible="accordion">
+        <% for(var i = players.length - 1; i >= 0; i--) { %>
+            <li>
+                <div class="collapsible-header"><span class="badge"><%= players[i].points %></span><%= players[i].name %></div>
+                <div class="collapsible-body">
+                    <% for (var j = 0; j < players[i].winningPicks.length; j++) { %>
+                        <section>
+                            <h5><%= players[i].winningPicks[j].round %>
+                                <% for (var k = 0; k < players[i].winningPicks[j].selection.length; k++) {%>
+                                    <span class="badge <%= players[i].winningPicks[j].selection[k].point ? 'new' : ''%>" data-badge-caption=""><%= players[i].winningPicks[j].selection[k].team %></span>    
+                                <% } %>
+                            </h5>
+                        </section>
+                    <% } %>
+                </div>
+            </li>
+        <% } %>
+        </ul>
+    </main>
+
+    <footer>
+
+    </footer>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+</body>
+</html>
