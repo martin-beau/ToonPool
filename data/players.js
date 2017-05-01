@@ -42,7 +42,7 @@ players.push({
 });
 
 players.push({
-    "name": "Francois Laroche",
+    "name": "Francois Larouche",
     "rounds": [
         { "wc": ["chi", "min", "ana", "edm"], "ec": ["mtl", "ott", "was", "pit"] },
         { "wc": ["chi", "edm"], "ec": ["mtl", "was"] },
