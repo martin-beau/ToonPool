@@ -6,6 +6,7 @@ var result_file_path = './data/results.json';
 var teams = require('./data/teams');
 var ejs = require('ejs');
 var fs = require('fs');
+var parallel = require('./parallel');
 var port = 8080;
 
 app.set('view engine', 'ejs');
@@ -27,7 +28,7 @@ fs.watchFile(result_file_path, function(){
 
 app.get('/pool/:year', function (req, res) {
     selectedYear = req.params.year
-    console.log('get results for year ' + selectedYear);
+    // console.log('get results for year ' + selectedYear);
     // console.log(JSON.stringify(results[selectedYear]));
     if (!results[selectedYear]) {
         res.render('empty', {'message': 'No results for ' + selectedYear});
@@ -36,10 +37,12 @@ app.get('/pool/:year', function (req, res) {
         //Setup pool points
         points = { 'rounds': [1, 2, 3, 4] };
 
+        var hrstart = process.hrtime();
+
         round1Finished = results[2017].rounds[0].wc.length + results[2017].rounds[0].ec.length === 8;
         round2Finished = results[2017].rounds[1].wc.length + results[2017].rounds[1].ec.length === 4;
         round3Finished = results[2017].rounds[2].wc.length + results[2017].rounds[2].ec.length === 2;
-
+        
         //Determine the current round
         if (!round1Finished) {
             currentRound = 0;
@@ -55,8 +58,10 @@ app.get('/pool/:year', function (req, res) {
         }
         // console.log('current round is ' + currentRound);
         // console.log('current point for round is ' + points.rounds[currentRound]);
-
+        console.log('current round takes: ' + process.hrtime(hrstart)[1]/1000000);
+        
         getPlayerPoints = function (player) {
+            hrstart = process.hrtime();
             currentPoints = 0;
             conferences = ['wc', 'ec'];
             // console.log(player.name);
@@ -83,12 +88,10 @@ app.get('/pool/:year', function (req, res) {
                 } 
                 else {
                     winningPicks.push({"round": "Round " + (k+1).toString(), "selection":[]});
-                    for (j = 0; j < conferences.length; j++) {
-                        conference = conferences[j];
+                    conferences.forEach(function(conference){
                         // console.log('checking points for conference ' + conference);
 
-                        for (i = 0; i < player.rounds[k][conference].length; i++) {
-                            selectedTeam = player.rounds[k][conference][i];
+                        player.rounds[k][conference].forEach(function(selectedTeam){
                             // console.log('player picked ' + selectedTeam);
 
                             // console.log('result ' + JSON.stringify(results[2017].rounds[k][conference]));
@@ -100,8 +103,8 @@ app.get('/pool/:year', function (req, res) {
                             else {          
                                 winningPicks[k].selection.push({"team": teams[2017][selectedTeam], "point": 0});
                             }
-                        }
-                    }
+                        });
+                    });
                 }
             }
             
@@ -109,10 +112,14 @@ app.get('/pool/:year', function (req, res) {
             player.points = currentPoints;
             player.winningPicks = winningPicks;
             // console.log('TOTAL POINTS: ' + player.points);
+            console.log('getPlayerPoints takes: ' + process.hrtime(hrstart)[1]/1000000);
         };
 
+        totStart = process.hrtime();
         players.forEach(getPlayerPoints);
-
+        console.log('total time for all players: ' + process.hrtime(totStart)[1]/1000000);
+        
+        hrstart = process.hrtime();
         var compare = function (a, b) {
             if (a.points < b.points) {
                 return -1;
@@ -123,7 +130,7 @@ app.get('/pool/:year', function (req, res) {
             return 0;
         };
         players.sort(compare);
-
+        console.log(process.hrtime(hrstart)[1]/1000000);
         res.render('results', {'players': players});
         // res.send(getDisplay());
 
