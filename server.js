@@ -30,6 +30,8 @@ app.get('/pool/:year', function (req, res) {
     selectedYear = req.params.year
     // console.log('get results for year ' + selectedYear);
     // console.log(JSON.stringify(results[selectedYear]));
+    getResults();
+
     if (!results[selectedYear]) {
         res.render('empty', {'message': 'No results for ' + selectedYear});
     }
