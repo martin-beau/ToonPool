@@ -2,7 +2,7 @@
     "2017": {
         "rounds": [
             { "wc": ["nsh", "ana", "stl", "edm"], "ec": ["pit", "nyr","was","ott"] },
-            { "wc": ["nsh"], "ec": ["ott"] },
+            { "wc": ["nsh"], "ec": ["ott", "pit"] },
             { "wc": [], "ec": [] }
         ],
         "winner": ""
