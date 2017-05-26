@@ -81,11 +81,11 @@ app.get('/pool/:year', function (req, res) {
                     winningPicks.push({"round": "Winner", "selection":[]});
                     if (results[2017].winner === player.winner) {
                         currentPoints += points.rounds[k];
-                        winningPicks[k].selection.push({"team": teams[2017][selectedTeam], "point": points.rounds[k]});
+                        winningPicks[k].selection.push({"team": teams[2017][player.winner], "point": points.rounds[k]});
                         // console.log('player gets ' + points.rounds[k] + ' point(s)');
                     }
                     else {
-                        winningPicks[k].selection.push({"team": teams[2017][selectedTeam], "point": 0});
+                        winningPicks[k].selection.push({"team": teams[2017][player.winner], "point": 0});
                     }
                 } 
                 else {
