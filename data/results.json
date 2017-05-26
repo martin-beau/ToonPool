@@ -3,7 +3,7 @@
         "rounds": [
             { "wc": ["nsh", "ana", "stl", "edm"], "ec": ["pit", "nyr","was","ott"] },
             { "wc": ["nsh", "ana"], "ec": ["ott", "pit"] },
-            { "wc": ["nsh"], "ec": [] }
+            { "wc": ["nsh"], "ec": ["pit"] }
         ],
         "winner": ""
     }
